@@ -2,12 +2,12 @@
   <div id="app">
     <div class="banner">
       <img
-        src="https://vuejs.org/images/logo.png"
-        width="100"
+        src="../../img/tortilla.png"
+        width="300"
         alt="vue"
         class="logo"
       />
-      <h1>Welcome to Vue.js</h1>
+      <h1>Welcome to iFood</h1>
     </div>
     <div class="bottom">
       To get started, edit <code>./src/components/App.vue</code> and save to reload.<br/>
@@ -22,6 +22,34 @@
   export default {
     name: 'app'
   }
+
+  /************************************
+  RECIPEE OBJEKT:
+  {
+    name: 'spanish tortilla',
+    ingredienser: [
+      {
+        'name': 'potato'
+        'quantity' : '1kg'
+      },
+      {
+        'name': 'egg'
+        'quantity' : '8'
+      },
+      {
+        'name': 'olive oil'
+        'quantity' : '3dl'
+      },
+      {
+        'name': 'salt'
+        'quantity' : '5g'
+      }
+    ],
+    description: '',
+    preparationTime: ''
+  }
+  */
+
 </script>
 
 <!-- CSS libraries -->
@@ -71,7 +99,7 @@
   }
 
   .logo {
-    animation: spin 4s 1s infinite linear
+    animation: spin 6s 1s infinite linear
   }
 
   @keyframes spin {
