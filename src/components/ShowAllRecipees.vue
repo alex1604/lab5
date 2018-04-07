@@ -12,7 +12,7 @@
 
 export default {
     showShoppingList: '',
-    props: ['name','showShoppingList', 'currentIngredient','ingredientList', 'ingredient', 'quantity', 'description', 'preparationTime']
+    props: ['name', 'index', 'showShoppingList', 'currentIngredient','ingredientList', 'ingredient', 'quantity', 'description', 'preparationTime']
 }
 
 </script>
