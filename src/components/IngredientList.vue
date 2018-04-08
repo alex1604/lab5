@@ -13,5 +13,6 @@ export default {
 <style scoped>
     li{
         list-style-type: square;
+        text-align: left;
     }
 </style>
