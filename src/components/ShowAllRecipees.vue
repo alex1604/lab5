@@ -1,45 +1,57 @@
 <template>
     <div class="awesomeRecipee">
-        <h3 class="recipeeName">{{name}}</h3>
+        <h3 class="recipeeName">{{name}} <i class="far fa-edit"></i></h3>
         <div class="recipeeDescription">Instructions: {{description}}</div>
         <div class="recipeeTime">{{preparationTime}}h</div>
-        <button class="showShoppingList" v-bind:name="name" v-on:click="$emit('my-event', $event)">What you need</button>
-        <div class="shoppingList" v-bind:class="{'show': showShoppingList}"><div class="close" v-on:click="$emit('event-hide', $event)"><i class="fas fa-times">X</i></div><div class="list">{{ingredientList}}</div></div>
+        <button class="showShoppingList" v-bind:name="name" v-on:click="$emit('my-event', $event)" v-bind:disabled="disableButton">What do I need?</button>            
     </div>
 </template>
-<script src="../../graf/fontawesome-all.js"></script>
 <script>
-
+import Ingredients from "./IngredientList.vue"
 export default {
     showShoppingList: '',
-    props: ['name', 'index', 'showShoppingList', 'currentIngredient','ingredientList', 'ingredient', 'quantity', 'description', 'preparationTime']
+    components: {
+        'ingredients-list' : Ingredients
+    },
+    props: ['name', 'index', 'disableButton', 'quantity', 'description', 'preparationTime', 'rightList']
 }
 
 </script>
 <style scoped>
-    .show{
-        display:flex !important;
-        background-color: rgb(130, 196, 192);
-        width: 50%;
-        min-height: 300px;
-        height: auto;
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%);
-        z-index:3;
-        flex-direction: column;
-        justify-content:space-around;
+    .fa-edit:hover{
+        cursor:pointer;
+        transform: scale(1.1);
+    }
+    .showShoppingList{
+        width:40%;
+        align-self:center;
+        background-color: rgb(87, 143, 247);
+        color:white;
+        text-shadow: 1px 1px 1px black;
+        border-radius: 10px;
+        padding: 10px;
+        transition: all 0.5s ease;
+        margin-top: 5%;
+    }
+    .showShoppingList:hover{
+        cursor:pointer;
+        box-shadow: 3px 3px 3px gray;
     }
     .awesomeRecipee{
+        width:70%;
         display:flex;
         flex-direction:column;
         justify-content: flex-start;
         font-family:'Ubuntu', sans-serif;
         margin: 5%;
+        padding: 5%;
+        border: 2px solid gray;
+        border-radius: 20px;
     }
     .recipeeName{
-        align-self:flex-start;
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
     .recipeeIngredients{
         display:flex;
@@ -57,15 +69,5 @@ export default {
     .recipeeTime{
         margin-right:3%;
         align-self: flex-end;
-    }
-    .shoppingList{
-        display:none;
-    }
-    .close{
-        align-self:flex-end;
-        margin-right:3%;
-    }
-    .close:hover{
-        cursor:pointer;
     }
 </style>

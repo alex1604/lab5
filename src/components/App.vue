@@ -1,4 +1,5 @@
 <template>
+
   <div id="app">
     <div class="banner">
       <img
@@ -15,19 +16,26 @@
       <show-recipees v-for="currentRecipee in recipees" v-bind:key="currentRecipee"
       v-bind:name="currentRecipee.name" 
       v-on:my-event="shoppingList"
-      v-on:event-hide="hideShoppingList"
       v-bind:description="currentRecipee.description" v-bind:preparationTime="currentRecipee.preparationTime"
-      v-bind:showShoppingList="showOrNot" v-bind:ingredientList="myIngredients"/>
+      v-bind:disableButton="disabledButtonYesOrNot"
+      />
+      <div class="show shoppingList" v-if="rightList"><div class="close" v-on:click="hideShoppingList"><i class="fas fa-times"></i></div><div class="list"><ul>
+            <ingredients-list v-for="currentIngredient in recipees[this.thisIndex].ingredients" v-bind:key="currentIngredient" v-bind:ingredient="currentIngredient"/>
+            </ul></div></div>
+
     </div>
   </div>
 </template>
-<script src="../../graf/fontawesome-all.js"></script>
 <script>
-import ShowRecipees from "./ShowAllRecipees.vue"
+import ShowRecipees from "./ShowAllRecipees.vue";
+import Ingredients from "./IngredientList.vue";
+import "../../static/fontawesome/fontawesome-all.js";
+
 export default {
   name: "app",
   components: {
-    "show-recipees": ShowRecipees
+    "show-recipees": ShowRecipees,
+    "ingredients-list": Ingredients
   },
   data: function() {
     return {
@@ -77,31 +85,31 @@ export default {
           preparationTime: "0.25"
         }
       ],
-      thisingredient: Number,
-      showOrNot: false,
-      myIngredients: '',
+      showOrNot: true,
+      disabledButtonYesOrNot: false,
+      rightList: false,
+      thisIndex: ""
     };
   },
   methods: {
-    shoppingList: function(event){
+    shoppingList: function(event) {
       let currentname = event.target.name;
-      console.log('current name = ' + currentname)
+      console.log("current name = " + currentname);
       for (let index in this.recipees) {
-        if (this.recipees[index].name == currentname){
-          let ingredients = this.recipees[index].ingredients
-          for(let ingredient in ingredients){
-            this.myIngredients += '- ' + ingredients[ingredient].name + ' (' + ingredients[ingredient].quantity + ')'
-          }
-          this.showOrNot = true
+        if (this.recipees[index].name == currentname) {
+          this.thisIndex = index;
+          this.rightList = true;
+          this.disabledButtonYesOrNot = true;
         }
       }
     },
-    hideShoppingList: function(event){
-      this.showOrNot = false
-      this.myIngredients = ''
+
+    hideShoppingList: function(event) {
+      this.rightList = false;
+      this.disabledButtonYesOrNot = false;
     }
-  },
-}
+  }
+};
 
 /************************************
   RECIPEE OBJEKT:
@@ -173,6 +181,10 @@ code::after {
   padding: 80px 10px;
   font-size: 24px;
   font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;
+  align-items:center;
 }
 
 .fade {
@@ -182,7 +194,36 @@ code::after {
 .logo {
   animation: spin 6s 1s infinite linear;
 }
-
+.show {
+  display: flex !important;
+  background-color: rgb(226, 236, 187);
+  width: 50%;
+  min-height: 300px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 3;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 3%;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+.close {
+  align-self: flex-end;
+}
+.list {
+  margin-top: 15%;
+}
+.close:hover {
+  cursor: pointer;
+}
+.fa-times {
+  color: rgb(88, 87, 87);
+  font-size: 36px;
+}
 @keyframes spin {
   from {
     transform: rotate(0deg);
