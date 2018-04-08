@@ -1,8 +1,8 @@
 <template>
-    <div class="awesomeRecipee">
-        <h3 class="recipeeName">{{name}} <i class="far fa-edit"></i></h3>
-        <div class="recipeeDescription">Instructions: {{description}}</div>
-        <div class="recipeeTime">{{preparationTime}}h</div>
+    <div class="awesomeRecipee" v-on:click="$emit('event-mark', $event)" v-bind:id="name">
+        <h3 class="recipeeName"  v-on:click="$emit('event-mark', $event)" v-bind:id="name">{{name}} <i class="far fa-edit"></i></h3>
+        <div class="recipeeDescription" v-on:click="$emit('event-mark', $event)" v-bind:id="name">Instructions: {{description}}</div>
+        <div class="recipeeTime" v-on:click="$emit('event-mark', $event)" v-bind:id="name">{{preparationTime}}h</div>
         <button class="showShoppingList" v-bind:name="name" v-on:click="$emit('my-event', $event)" v-bind:disabled="disableButton">What do I need?</button>            
     </div>
 </template>
@@ -47,6 +47,9 @@ export default {
         padding: 5%;
         border: 2px solid gray;
         border-radius: 20px;
+    }
+    .awesomeRecipee:hover{
+        cursor:pointer;
     }
     .recipeeName{
         display:flex;
