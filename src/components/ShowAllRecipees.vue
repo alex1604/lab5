@@ -1,6 +1,6 @@
 <template>
     <div class="awesomeRecipee" v-on:click="$emit('event-mark', $event)" v-bind:id="name">
-        <h3 class="recipeeName"  v-on:click="$emit('event-mark', $event)" v-bind:id="name">{{name}} <i class="far fa-edit"></i></h3>
+        <h3 class="recipeeName"  v-on:click="$emit('event-mark', $event)" v-bind:id="name">{{name}}</h3>
         <div class="recipeeDescription" v-on:click="$emit('event-mark', $event)" v-bind:id="name">Instructions: {{description}}</div>
         <div class="recipeeTime" v-on:click="$emit('event-mark', $event)" v-bind:id="name">
           <i class="far fa-clock"></i>{{preparationTime}}h</div>

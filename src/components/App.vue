@@ -8,7 +8,7 @@
         alt="vue"
         class="logo"
       />
-      <h1>Welcome to u-0melette</h1>
+      <h1>Uncle David's Recipees</h1>
     </div>
     <div class="bottom">
 
