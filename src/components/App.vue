@@ -2,29 +2,42 @@
 
   <div id="app">
     <div class="banner">
-      <img
+      <!-- <img
         src="../../img/tortilla.png"
         width="300"
         alt="vue"
         class="logo"
-      />
+      /> -->
       <h1>Uncle David's Recipees</h1>
     </div>
     <div class="bottom">
+      <h3>Uncle David's favorite recipees include the best of international cousine. <br> Be cool, cook like uncle David!
+      </h3>
+      <p>Edit the recipees to your liking or check the ingredients</p>
 
-      Edit the recipees to your liking or check the ingredients<br/>
 
-
-      <show-recipees v-for="currentRecipee in recipees" v-bind:key="currentRecipee"
+      <show-recipees v-for="currentRecipee in recipees" v-bind:key="currentRecipee.id"
       v-bind:name="currentRecipee.name"
       v-on:my-event="shoppingList"
       v-bind:description="currentRecipee.description" v-bind:preparationTime="currentRecipee.preparationTime"
-      v-bind:disableButton="disabledButtonYesOrNot" v-on:event-mark="markRecipee"/>
-      <div class="show shoppingList" v-if="rightList"><div class="close" v-on:click="hideShoppingList"><i class="fas fa-times"></i></div><div class="list"><ul>
-            <ingredients-list v-for="currentIngredient in recipees[this.thisIndex].ingredients" v-bind:key="currentIngredient" v-bind:ingredient="currentIngredient"/>
-            </ul></div></div>
+      v-bind:disableButton="disabledButtonYesOrNot" v-on:event-mark="markRecipee"
+      v-on:change-to-input="changeToInput"
+    />
+      <div class="show shoppingList" v-if="rightList">
+        <div class="close" v-on:click="hideShoppingList">
+          <i class="fas fa-times"></i>
+        </div>
+        <div class="list">
+          <ul>
+            <ingredients-list v-for="currentIngredient in recipees[this.thisIndex].ingredients" v-bind:key="currentIngredient.id" v-bind:ingredient="currentIngredient"/>
+          </ul>
+          </div>
+        </div>
       <selected-element v-if="showNotification" v-bind:SelectedRecipee="recipeeSelected.ingredients" v-bind:name="recipeeSelected.name"
-       v-bind:preparationTime="recipeeSelected.preparationTime"/>
+      v-bind:preparationTime="recipeeSelected.preparationTime"
+      v-on:hide-select-el="hideSelectedEl"/>
+
+        </div>
     </div>
   </div>
 
@@ -35,6 +48,7 @@
 import ShowRecipees from "./ShowAllRecipees.vue";
 import Ingredients from "./IngredientList.vue";
 import SelectedElement from "./SelectedElement.vue";
+
 import "../../static/fontawesome/fontawesome-all.js";
 
 export default {
@@ -42,7 +56,7 @@ export default {
   components: {
     "show-recipees": ShowRecipees,
     "ingredients-list": Ingredients,
-    "selected-element": SelectedElement
+    "selected-element": SelectedElement,
   },
   data: function() {
     return {
@@ -124,11 +138,11 @@ export default {
             }
           ],
           description:
-            "Melt the butter and leave to cool slightly. Whisk the egg and sugar together until the mixture is light, fluffy and pale. Weigh all the dry ingredients and sift them into the egg and sugar mixture. Fold in until everything is incorporated. Fold in the melted butter until you are left with a smooth chocolate mixture. Pour into a lined cake tin. This recipe fits a normal tin. The cake will not rise, but it will puff up slightly during baking. Bake at 180°C for around 20 minutes. The exact time can vary, so keep an eye on the cake. A perfect kladdkaka is very soft in the middle, but not runny once it has cooled – but almost runny. If you press down gently on the cake whilst its baking, the crust should need a bit of pressure to crack. When this happens, the cake is done. Leave to cool in the tin for at least an hour.",
+            "Melt the butter and leave to cool slightly. Whisk the egg and sugar together until the mixture is light, fluffy and pale. Weigh all the dry ingredients and sift them into the egg and sugar mixture. Fold in until everything is incorporated. Fold in the melted butter until you are left with a smooth chocolate mixture. Pour into a lined cake tin.The cake will not rise, but it will puff up slightly during baking. Bake at 180°C for around 20 minutes. The exact time can vary, so keep an eye on the cake. A perfect kladdkaka is very soft in the middle, but not runny once it has cooled – but almost runny. Leave to cool in the tin for at least an hour.",
           preparationTime: "0.35"
         },
         {
-          name: "Slovak gnocchi with bryndza-cheese",
+          name: "Slovak gnocchi with sheep cheese",
           ingredients: [
             {
               name: "potato",
@@ -196,6 +210,8 @@ export default {
       recipeeSelected:'',
       showNotification: false,
       currentname: '',
+      toggleInput: false,
+
     };
   },
   methods: {
@@ -226,8 +242,21 @@ export default {
         }
       }
           this.showNotification = true;
+          console.log(this.showNotification);
           console.log(this.recipeeSelected)
-    }
+    },
+
+    hideSelectedEl:function(event){
+      console.log(this.showNotification);
+      this.showNotification = false;
+    },
+    changeToInput: function(event){
+      console.log("I'm tootaly working");
+      console.log(event.target);
+      console.log(this.toggleInput);
+      this.toggleInput = !this.toggleInput;
+      console.log(this.toggleInput);
+  }
   }
 };
 
@@ -284,17 +313,24 @@ code::after {
 <style scoped>
 #app {
   text-align: center;
+  box-sizing: border-box;
 }
 
 #app h1 {
-  color: #2c3e50;
-  font-weight: 300;
+  color: #0A0944;
+  font-size: 50px;
+  font-family:serif;
+  /* font-weight: 300; */
   margin: 0;
+  text-decoration: underline;
+}
+#app h3{
+  color:##0A0944;
 }
 
 .banner {
   height: 200px;
-  background-color: #f6f6f6;
+  background-color: #FFDD7E;
   padding: 50px 10px;
 }
 
@@ -302,12 +338,10 @@ code::after {
   padding: 80px 10px;
   font-size: 24px;
   font-weight: 300;
-  background-color: #F5E1DA ;
   display: flex;
   flex-direction: column;
-  justify-content:flex-start;
-  align-items:center;
-
+  justify-content:space-around;
+  background-color: #FFDD7E;
 }
 
 .fade {
@@ -315,11 +349,12 @@ code::after {
 }
 
 .logo {
-  animation: spin 6s 1s infinite linear;
+  animation: spin 5s 1s infinite linear;
 }
 .show {
-  display: flex !important;
-  background-color: rgb(231, 216, 238);
+  display: flex;
+  background-color: #40A798;
+  color:#F1F1F1;
   width: auto;
   min-height: 200px;
   height: auto;
@@ -331,8 +366,9 @@ code::after {
   flex-direction: column;
   justify-content: flex-start;
   padding: 3% 7%;
-  border-radius: 15px;
-  border: 1px solid gray;
+  -webkit-box-shadow: 0px 0px 40px 0px rgba(50,77,70,1);
+  -moz-box-shadow: 0px 0px 40px 0px rgba(50,77,70,1);
+  box-shadow: 0px 0px 40px 0px rgba(50,77,70,1);
 }
 .selected{
   box-shadow: 3px 3px 3px green, 3px 3px 3px green;
@@ -347,8 +383,8 @@ code::after {
   cursor: pointer;
 }
 .fa-times {
-  color: rgb(88, 87, 87);
-  font-size: 36px;
+  color: #F1F1F1;
+  font-size: 30px;
 }
 @keyframes spin {
   from {

@@ -1,7 +1,7 @@
 <template>
-        <div class="marked">
+        <div v-on:click="$emit('hide-select-el', $event)" class="marked">
             <h3>{{name}}</h3>
-            <ul class="list"><ingredients-list v-for="SelectedIngredient in SelectedRecipee" v-bind:key="SelectedIngredient" v-bind:ingredient="SelectedIngredient"/></ul>
+            <ul class="list"><ingredients-list v-for="SelectedIngredient in SelectedRecipee" v-bind:key="SelectedIngredient.id" v-bind:ingredient="SelectedIngredient"/></ul>
             <p>{{preparationTime}} h</p>
         </div>
 </template>
@@ -27,13 +27,18 @@ export default {
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        background-color: rgb(245, 231, 154);
-        border-radius: 15px;
+        -webkit-box-shadow: 0px 0px 40px 0px rgba(50,77,70,1);
+        -moz-box-shadow: 0px 0px 40px 0px rgba(50,77,70,1);
+        box-shadow: 0px 0px 40px 0px rgba(50,77,70,1);
+        background-color: #F1F1F1;
+        border-radius: 5px;
         padding: 0 40px 0 20px;
-        opacity:0.8;
+          opacity:0.95;
+        /* opacity:0.8; */
     }
     .marked:hover{
-        opacity:0.95;
+        opacity:1;
+        /* cursor: url("../../img/tortilla.png"); */
     }
     .marked li{
         text-align: left;
