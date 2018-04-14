@@ -4,7 +4,10 @@
         <i class="fas fa-times"></i>
       </div>
       <h3>{{name}}? Good choice!</h3>
-      <ul class="list"><ingredients-list v-for="SelectedIngredient in SelectedRecipee" v-bind:key="SelectedIngredient.id" v-bind:ingredient="SelectedIngredient"/></ul>
+      <ul class="list">
+        <ingredients-list
+        v-for="SelectedIngredient in SelectedRecipee" v-bind:key="SelectedIngredient.id" v-bind:ingredient="SelectedIngredient"/>
+      </ul>
       <p>Preparation time: {{preparationTime}} h</p>
     </div>
 </template>

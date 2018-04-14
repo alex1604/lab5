@@ -14,13 +14,12 @@
   </div>
   <div class="bottom">
     <h3>Uncle David's favorite recipes include the best of international cousine. <br> Be cool, cook like uncle David!
-      </h3>
+    </h3>
     <p>Edit the recipees to your liking or check the ingredients</p>
-
-    <show-recipees v-for="currentRecipee in recipees" v-bind:key="currentRecipee.id" v-bind:name="currentRecipee.name" v-on:my-event="shoppingList" v-bind:description="currentRecipee.description" v-bind:preparationTime="currentRecipee.preparationTime" v-bind:disableButton="disabledButtonYesOrNot"
-    v-on:event-mark="markRecipee"
-
-      />
+    <div>
+      <show-recipees v-for="currentRecipee in recipees" v-bind:key="currentRecipee.name" v-bind:name="currentRecipee.name" v-on:my-event="shoppingList" v-bind:description="currentRecipee.description" v-bind:preparationTime="currentRecipee.preparationTime" v-bind:disableButton="disabledButtonYesOrNot"
+      v-on:event-mark="markRecipee"/>
+    </div>
     <div class="show shoppingList" v-if="rightList">
       <div class="close" v-on:click="hideShoppingList">
         <i class="fas fa-times"></i>
@@ -31,7 +30,7 @@
         </ul>
       </div>
     </div>
-      <selected-element v-if="showNotification" v-bind:SelectedRecipee="recipeeSelected.ingredients" v-bind:name="recipeeSelected.name" v-bind:preparationTime="recipeeSelected.preparationTime" v-on:hide-select-el="hideSelectedEl" />
+    <selected-element v-if="showNotification" v-bind:SelectedRecipee="recipeeSelected.ingredients" v-bind:name="recipeeSelected.name" v-bind:preparationTime="recipeeSelected.preparationTime" v-on:hide-select-el="hideSelectedEl" />
   </div>
 </div>
 </template>
@@ -49,11 +48,25 @@ export default {
     "show-recipees": ShowRecipees,
     "ingredients-list": Ingredients,
     "selected-element": SelectedElement,
-
   },
+
+
   data: function() {
     return {
-
+      showOrNot: true,
+      disabledButtonYesOrNot: false,
+      rightList: false,
+      thisIndex: "",
+      recipeeSelected: '',
+      showNotification: false,
+      currentname: '',
+      urlList: [
+        '../../img/span-tortilla.jpg',
+        '../../img/crepes.jpg',
+        '../../img/kladdkaka.jpg',
+        '../../img/slov-halusky.jpg',
+        '../../img/omelette.jpg',
+      ],
       recipees: [{
           name: "Spanish Tortilla",
           ingredients: [{
@@ -186,21 +199,6 @@ export default {
         }
 
       ],
-      showOrNot: true,
-      disabledButtonYesOrNot: false,
-      rightList: false,
-      thisIndex: "",
-      recipeeSelected: '',
-      showNotification: false,
-      currentname: '',
-      urlList:[
-         '../../img/span-tortilla.jpg',
-        '../../img/crepes.jpg',
-        '../../img/kladdkaka.jpg',
-        '../../img/slov-halusky.jpg',
-        '../../img/omelette.jpg',
-
-      ],
 
     };
   },
@@ -242,6 +240,7 @@ export default {
       this.showNotification = false;
     },
 
+
   }
 };
 
@@ -273,10 +272,13 @@ export default {
   }
   */
 </script>
-
+<style>
+@import url('https://fonts.googleapis.com/css?family=Damion');
+</style>
 <!-- CSS libraries -->
 <style src="normalize.css/normalize.css">
-</style>< !-- Global CSS --><style>code {
+</style>< !-- Global CSS --><style>
+code {
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
   Bitstream Vera Sans Mono, Courier New, monospace, serif;
   font-size: 0.9em;
@@ -296,30 +298,28 @@ code::after {
 #app {
   text-align: center;
   box-sizing: border-box;
-  color:#0A0944;
+  color: #0A0944;
 }
 
 #app h1 {
   color: #0A0944;
-  font-size: 50px;
-  font-family: serif;
-  font-weight: 700;
+  font-size: 80px;
+  /* font-weight: 700; */
+  font-family: 'Damion';
   margin: 20px;
-  text-transform: uppercase;
   /* text-shadow: 0px 5px 8px rgba(150, 150, 150, 1); */
-  /* font-family: 'Great Vibes', cursive; */
 }
 
 img {
   box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
   height: 150px;
-  margin: 5px;
+  margin: 0px;
   width: auto;
 }
 
 .banner {
   /* height: 200px; */
-  background-color: #F7B32D;
+  background-color:#76A665;
   padding: 50px 10px;
 
 }
@@ -331,7 +331,7 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color:#F7B32D;
+  background-color:#76A665
 }
 
 .fade {
@@ -344,8 +344,8 @@ img {
 
 .show {
   display: flex;
-  background-color: #40A798;
-  color: #F1F1F1;
+  background-color: #F1F1F1;
+  color: #0A0944;
   width: auto;
   min-height: 200px;
   height: auto;
@@ -379,7 +379,7 @@ img {
 }
 
 .fa-times {
-  color: #F1F1F1;
+  color:  #0A0944;;
   font-size: 30px;
 }
 
