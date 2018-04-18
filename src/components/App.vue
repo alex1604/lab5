@@ -1,5 +1,7 @@
 <template>
 <div id="app">
+  <nav>
+  </nav>
   <div class="banner">
     <!-- <img
         src="../../img/tortilla.png"
@@ -7,9 +9,9 @@
         alt="vue"
         class="logo"
       /> -->
-    <div>
-      <img v-for="url in urlList" v-bind:src="url" alt="food pictures, really nice">
-    </div>
+
+      <!-- <img v-for="url in urlList" v-bind:src="url" alt="food pictures, really nice"> -->
+
     <h1>Uncle David's Recipes</h1>
   </div>
   <div class="bottom">
@@ -17,13 +19,19 @@
     </h3>
     <p>Edit the recipees to your liking or check the ingredients</p>
     <div>
-      <show-recipees v-for="currentRecipee in recipees" v-bind:key="currentRecipee.name" v-bind:name="currentRecipee.name" v-on:my-event="shoppingList" v-bind:description="currentRecipee.description" v-bind:preparationTime="currentRecipee.preparationTime" v-bind:disableButton="disabledButtonYesOrNot"
-      v-on:event-mark="markRecipee"/>
+      <show-recipees v-for="(currentRecipee, url) in recipees"
+      v-bind:id="currentRecipee.id"
+      v-bind:key="currentRecipee.id" v-bind:name="currentRecipee.name" v-on:my-event="shoppingList"
+      v-bind:url="currentRecipee.url"
+      v-bind:description="currentRecipee.description" v-bind:preparationTime="currentRecipee.preparationTime" v-bind:disableButton="disabledButtonYesOrNot"
+      v-on:event-mark="markRecipee"
+      v-on:change-elment="changeInputElement"/>
     </div>
     <div class="show shoppingList" v-if="rightList">
       <div class="close" v-on:click="hideShoppingList">
         <i class="fas fa-times"></i>
       </div>
+      <h3>You'll need: </h3>
       <div class="list">
         <ul>
           <ingredients-list v-for="currentIngredient in recipees[this.thisIndex].ingredients" v-bind:key="currentIngredient.id" v-bind:ingredient="currentIngredient" />
@@ -41,6 +49,9 @@ import Ingredients from "./IngredientList.vue";
 import SelectedElement from "./SelectedElement.vue";
 
 import "../../static/fontawesome/fontawesome-all.js";
+
+const Recipees = require('./../recipes.json');
+console.log(Recipees);
 
 export default {
   name: "app",
@@ -60,6 +71,7 @@ export default {
       recipeeSelected: '',
       showNotification: false,
       currentname: '',
+
       urlList: [
         '../../img/span-tortilla.jpg',
         '../../img/crepes.jpg',
@@ -69,6 +81,8 @@ export default {
       ],
       recipees: [{
           name: "Spanish Tortilla",
+          id:"Spanish",
+          url:  '../../img/span-tortilla.jpg',
           ingredients: [{
               name: "potato",
               quantity: "1kg"
@@ -91,6 +105,8 @@ export default {
         },
         {
           name: "French Omelette",
+          id: "French",
+          url:'../../img/crepes.jpg',
           ingredients: [{
               name: "egg",
               quantity: "3"
@@ -109,6 +125,8 @@ export default {
         },
         {
           name: "Swedish 'kladdkaka'",
+          id: "Swedish",
+          url:'../../img/kladdkaka.jpg',
           ingredients: [{
               name: "butter",
               quantity: "100 g"
@@ -138,11 +156,13 @@ export default {
               quantity: "1 pince"
             }
           ],
-          description: "Melt the butter and leave to cool slightly. Whisk the egg and sugar together until the mixture is light, fluffy and pale. Weigh all the dry ingredients and sift them into the egg and sugar mixture. Fold in until everything is incorporated. Fold in the melted butter until you are left with a smooth chocolate mixture. Pour into a lined cake tin.The cake will not rise, but it will puff up slightly during baking. Bake at 180°C for around 20 minutes. The exact time can vary, so keep an eye on the cake. A perfect kladdkaka is very soft in the middle, but not runny once it has cooled – but almost runny. Leave to cool in the tin for at least an hour.",
+          description: "Melt the butter and leave to cool slightly. Whisk the egg and sugar together until the mixture is light, fluffy and pale. Weigh all the dry ingredients and sift them into the egg and sugar mixture. Fold in until everything is incorporated. Fold in the melted butter until you are left with a smooth chocolate mixture. Pour into a lined cake tin.The cake will not rise, but it will puff up slightly during baking. Bake at 180°C for around 20 minutes.",
           preparationTime: "0.35"
         },
         {
-          name: "Slovak gnocchi with sheep cheese",
+          name: "Slovak gnocchi",
+          id: "Slovak",
+          url: '../../img/slov-halusky.jpg',
           ingredients: [{
               name: "potato",
               quantity: "1 kg"
@@ -169,6 +189,8 @@ export default {
         },
         {
           name: "Mushroom Omelette",
+          id: "Mushroom",
+          url: '../../img/omelette.jpg',
           ingredients: [{
               name: "mushroom",
               quantity: "0.5kg"
@@ -204,10 +226,10 @@ export default {
   },
   methods: {
     shoppingList: function(event) {
-      let currentname = event.target.name;
+      let currentname = event.target.id;
       console.log("current name = " + currentname);
       for (let index in this.recipees) {
-        if (this.recipees[index].name == currentname) {
+        if (this.recipees[index].id == currentname) {
           this.thisIndex = index;
           this.rightList = true;
           this.disabledButtonYesOrNot = true;
@@ -220,13 +242,13 @@ export default {
       this.disabledButtonYesOrNot = false;
     },
     markRecipee: function(event) {
-      console.log(event.target);
+      console.log(event.target.id);
       this.currentname = event.target;
       let currentname = this.currentname.id;
       console.log(currentname);
       this.currentname.classList.add('selected');
       for (let index in this.recipees) {
-        if (this.recipees[index].name == currentname) {
+        if (this.recipees[index].id == currentname) {
           this.recipeeSelected = this.recipees[index];
         }
       }
@@ -238,6 +260,9 @@ export default {
     hideSelectedEl: function(event) {
       // console.log(this.showNotification);
       this.showNotification = false;
+    },
+    changeInputElement: function(event){
+      console.log(event.target);
     },
 
 
@@ -300,7 +325,16 @@ code::after {
   box-sizing: border-box;
   color: #0A0944;
 }
-
+nav{
+  background-color: #0A0944;
+  color: #F1F1F1;
+  height: 50px;
+  display: flex;
+  font-size: 30px;
+  margin: 0;
+  padding:5px;
+  list-style: none;
+}
 #app h1 {
   color: #0A0944;
   font-size: 80px;
@@ -310,16 +344,16 @@ code::after {
   /* text-shadow: 0px 5px 8px rgba(150, 150, 150, 1); */
 }
 
-img {
+/* img {
   box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
   height: 150px;
   margin: 0px;
   width: auto;
-}
+} */
 
 .banner {
   /* height: 200px; */
-  background-color:#76A665;
+  background-color:#FFF1C1;
   padding: 50px 10px;
 
 }
@@ -331,7 +365,7 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color:#76A665
+  background-color:#FFF1C1
 }
 
 .fade {
@@ -356,7 +390,7 @@ img {
   z-index: 3;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 3% 7%;
+  padding: 4%;
   -webkit-box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
   -moz-box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
   box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
@@ -371,7 +405,7 @@ img {
 }
 
 .list {
-  margin-top: 15%;
+  /* margin-top: 15%; */
 }
 
 .close:hover {
@@ -380,7 +414,7 @@ img {
 
 .fa-times {
   color:  #0A0944;;
-  font-size: 30px;
+
 }
 
 @keyframes spin {
