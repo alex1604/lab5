@@ -1,6 +1,6 @@
 <template>
         <li>
-            {{ingredient.name}}, {{ingredient.quantity}}
+             {{ingredient.quantity}} {{ingredient.name}}
         </li>
 </template>
 <script>

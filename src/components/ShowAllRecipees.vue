@@ -1,6 +1,6 @@
 <template>
 <div class="awesomeRecipee" v-bind:id="id">
-  <h3 class="recipeeName" v-bind:id="id">{{name}}</h3>
+  <h3 class="recipeeName" v-bind:id="id">{{ name }}</h3>
   <div class="imgDescrDiv">
     <div class="recipeeDescription" v-bind:id="id">Instructions: {{description}}
     </div>
@@ -10,18 +10,17 @@
     <i class="far fa-clock"></i>{{preparationTime}} h
   </div>
   <div class="buttons">
-    <button v-bind:id="id" v-on:click="$emit('event-mark', $event)" class="changeList" type="button" v-bind:name="name">Like
-          <i v-bind:id="id" class="fas fa-heart"></i>
+    <button v-bind:id="id" v-on:click="$emit('event-mark', $event)" class="changeList" type="button">Like this recipe!
+    </button>
+    <button class="showShoppingList" v-bind:id="id" v-on:click="$emit('my-event', $event)" v-bind:disabled="disableButton">What do I need?
           </button>
-    <button class="showShoppingList" v-bind:name="name" v-bind:id="id" v-on:click="$emit('my-event', $event)" v-bind:disabled="disableButton">What do I need?
-          </button>
-    <button v-on:click="changeThis" type="button" v-bind:name="name" v-bind:id="id" class="changeList">Change</button>
+    <button v-on:click="changeThis" type="button" v-bind:id="id" class="changeList">Change</button>
     </div>
     <div class="divChange" v-if="seen">
       <h3>Title:</h3>
-      <input v-on:change="changeInputElement($event)" v-model="name" type="text">
+      <input v-on:change="changeInputName($event)" v-model="name" type="text" v-bind:id="id">
       <h3>Instructions:</h3>
-      <textarea v-model="description" name="content" rows="8" cols="40"></textarea>
+      <textarea v-on:change="changeInputDescrip($event)"v-model="description"  v-bind:id="id" name="content" rows="8" cols="40"></textarea>
     </div>
 </div>
 </template>
@@ -33,13 +32,22 @@ export default {
   data: function() {
     return {
       seen: false,
-      showShoppingList: "", // should this be in data?
+      showShoppingList: "",
 
     }
   },//data
   methods: {
-    changeInputElement: function(){
+    changeInputName: function(event){
+      let updateTitelText = event.target
+      this.$emit('edit-recipe', {
+       type: "updateTitle",
+     });
 
+    },
+    changeInputDescrip: function(event){
+      this.$emit('edit-recipe', {
+        type: "updateDescription",
+      });
     },
     changeThis: function(event) {
       this.seen = !this.seen;
@@ -54,7 +62,7 @@ export default {
       components: {
         'ingredients-list': Ingredients,
       },
-      props: ['name','id', 'url','index', 'disableButton', 'quantity', 'description', 'preparationTime', 'rightList'],
+      props: ['Recipees','name','id', 'url','index', 'disableButton', 'quantity', 'description', 'preparationTime', 'rightList'],
 
   }
 </script>
@@ -213,6 +221,7 @@ textarea {
   justify-content: space-between;
   align-items: center;
   display: flex;
+  font-weight: bold;
 
 }
 </style>
