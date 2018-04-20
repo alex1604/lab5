@@ -18,9 +18,9 @@
     </div>
     <div class="divChange" v-if="seen">
       <h3>Title:</h3>
-      <input v-on:change="changeInputName($event)" v-model="name" type="text" v-bind:id="id">
+      <input v-on:change="changeInputName($event)" v-model="newName" type="text" v-bind:id="id">
       <h3>Instructions:</h3>
-      <textarea v-on:change="changeInputDescrip($event)"v-model="description"  v-bind:id="id" name="content" rows="8" cols="40"></textarea>
+      <textarea v-on:change="changeInputDescrip($event)"v-model="newDescription"  v-bind:id="id" name="content" rows="8" cols="40"></textarea>
     </div>
 </div>
 </template>
@@ -33,6 +33,8 @@ export default {
     return {
       seen: false,
       showShoppingList: "",
+      newName: this.name,
+      newDescription: this.description,
 
     }
   },//data
