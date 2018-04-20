@@ -1,5 +1,7 @@
 <template>
 <div id="app">
+  <nav>
+  </nav>
   <div class="banner">
     <!-- <img
         src="../../img/tortilla.png"
@@ -7,31 +9,42 @@
         alt="vue"
         class="logo"
       /> -->
-    <div>
-      <img v-for="url in urlList" v-bind:src="url" alt="food pictures, really nice">
-    </div>
+
+      <!-- <img v-for="url in urlList" v-bind:src="url" alt="food pictures, really nice"> -->
+
     <h1>Uncle David's Recipes</h1>
   </div>
   <div class="bottom">
     <h3>Uncle David's favorite recipes include the best of international cousine. <br> Be cool, cook like uncle David!
     </h3>
-    <p>Edit the recipees to your liking or check the ingredients</p>
+    <p>Edit the recipees to your liking, check the ingredients or change the description</p>
     <div>
-      <show-recipees v-for="currentRecipee in recipees" v-bind:key="currentRecipee.name" v-bind:name="currentRecipee.name" v-on:my-event="shoppingList" v-bind:description="currentRecipee.description" v-bind:preparationTime="currentRecipee.preparationTime" v-bind:disableButton="disabledButtonYesOrNot"
-      v-on:event-mark="markRecipee"/>
+      <show-recipees v-for="currentRecipee in Recipees"
+      v-bind:id="currentRecipee.id"
+      v-bind:url="currentRecipee.url"
+      v-bind:key="currentRecipee.id" v-bind:name="currentRecipee.name" v-on:my-event="shoppingList"
+      v-bind:description="currentRecipee.description" v-bind:preparationTime="currentRecipee.preparationTime" v-bind:disableButton="disabledButtonYesOrNot"
+      v-on:event-mark="markRecipee"
+      v-on:edit-recipe="changeElement"/>
     </div>
     <div class="show shoppingList" v-if="rightList">
       <div class="close" v-on:click="hideShoppingList">
         <i class="fas fa-times"></i>
       </div>
+      <h3>You'll need: </h3>
       <div class="list">
         <ul>
-          <ingredients-list v-for="currentIngredient in recipees[this.thisIndex].ingredients" v-bind:key="currentIngredient.id" v-bind:ingredient="currentIngredient" />
+          <ingredients-list v-for="currentIngredient in Recipees[this.thisIndex].ingredients" v-bind:key="currentIngredient.id" v-bind:ingredient="currentIngredient" />
         </ul>
       </div>
     </div>
     <selected-element v-if="showNotification" v-bind:SelectedRecipee="recipeeSelected.ingredients" v-bind:name="recipeeSelected.name" v-bind:preparationTime="recipeeSelected.preparationTime" v-on:hide-select-el="hideSelectedEl" />
   </div>
+  <footer>
+    <div>Made with lots of <i class="fas fa-heart"></i> and <i class="fas fa-coffee"></i> by Alejandro &amp; Anna
+    </div>
+  </footer>
+
 </div>
 </template>
 
@@ -41,6 +54,9 @@ import Ingredients from "./IngredientList.vue";
 import SelectedElement from "./SelectedElement.vue";
 
 import "../../static/fontawesome/fontawesome-all.js";
+
+const Recipees = require('./../recipes.json'); //alla recept i json objekt
+console.log(Recipees);
 
 export default {
   name: "app",
@@ -53,6 +69,7 @@ export default {
 
   data: function() {
     return {
+      Recipees: Recipees,
       showOrNot: true,
       disabledButtonYesOrNot: false,
       rightList: false,
@@ -60,154 +77,165 @@ export default {
       recipeeSelected: '',
       showNotification: false,
       currentname: '',
-      urlList: [
-        '../../img/span-tortilla.jpg',
-        '../../img/crepes.jpg',
-        '../../img/kladdkaka.jpg',
-        '../../img/slov-halusky.jpg',
-        '../../img/omelette.jpg',
-      ],
-      recipees: [{
-          name: "Spanish Tortilla",
-          ingredients: [{
-              name: "potato",
-              quantity: "1kg"
-            },
-            {
-              name: "egg",
-              quantity: "8"
-            },
-            {
-              name: "olive oil",
-              quantity: "3dl"
-            },
-            {
-              name: "salt",
-              quantity: "5g"
-            }
-          ],
-          description: "Wash and peel all the potatos before slicing them. The slices should be around 5mm. After this, add a spoon of olive oil and steer. Prepare the frier/pan and when it's ready start frying the potato slices. In the mean time you can start opening the eggs and blend them with a fork or any manual blending tool. Once all the slices are fried, throw the egg mix into the big bowl where you've previously thrown the potato slices. All the slices should be covered by the egg mix. If so, add the salt and throw in the mix into a very hot pan filled with around 5mm/1cm of olive oil. Turn down the temperature to 4/10 and heck the tortilla every 3-4 mins. When the down side is turning gold, turn the torilla upside down and remove when done.",
-          preparationTime: "1.5"
-        },
-        {
-          name: "French Omelette",
-          ingredients: [{
-              name: "egg",
-              quantity: "3"
-            },
-            {
-              name: "olive oil",
-              quantity: "1 teaspoon"
-            },
-            {
-              name: "salt",
-              quantity: "1 pince"
-            }
-          ],
-          description: "Crack the eggs and blend them with a fork or any manual blending tool. Add the oil to the pan and throw the egg mix when the oil is warm enough. Turn down the temperature to 4/10. When the down side is turning gold, fold it in by its half and leave on the pan for an extra minute.",
-          preparationTime: "0.25"
-        },
-        {
-          name: "Swedish 'kladdkaka'",
-          ingredients: [{
-              name: "butter",
-              quantity: "100 g"
-            },
-            {
-              name: "egg",
-              quantity: "2"
-            },
-            {
-              name: "plain flour",
-              quantity: "150g"
-            },
-            {
-              name: "cocoa powder",
-              quantity: "4 teaspoon"
-            },
-            {
-              name: "vanilla sugar",
-              quantity: "1 tbsp"
-            },
-            {
-              name: "sugar",
-              quantity: "200 g"
-            },
-            {
-              name: "salt",
-              quantity: "1 pince"
-            }
-          ],
-          description: "Melt the butter and leave to cool slightly. Whisk the egg and sugar together until the mixture is light, fluffy and pale. Weigh all the dry ingredients and sift them into the egg and sugar mixture. Fold in until everything is incorporated. Fold in the melted butter until you are left with a smooth chocolate mixture. Pour into a lined cake tin.The cake will not rise, but it will puff up slightly during baking. Bake at 180°C for around 20 minutes. The exact time can vary, so keep an eye on the cake. A perfect kladdkaka is very soft in the middle, but not runny once it has cooled – but almost runny. Leave to cool in the tin for at least an hour.",
-          preparationTime: "0.35"
-        },
-        {
-          name: "Slovak gnocchi with sheep cheese",
-          ingredients: [{
-              name: "potato",
-              quantity: "1 kg"
-            },
-            {
-              name: "flour",
-              quantity: "400 g"
-            },
-            {
-              name: "bryndza - cheese",
-              quantity: "300 g"
-            },
-            {
-              name: "smoked bacon",
-              quantity: "100 g"
-            },
-            {
-              name: "salt",
-              quantity: "1 pince"
-            },
-          ],
-          description: "Peel potatos, wash and shred them, add salt. Add flour to achive right consistency. Moisten the chopping board, put the part of the dough on it, use a knife to drop a little bit of the dough into the boiling salty water. When gnocchi (in slovak called halušky) are done they will float to the top. Pick them out, add bryndza-cheese and put fried bacon on top.",
-          preparationTime: "0.30"
-        },
-        {
-          name: "Mushroom Omelette",
-          ingredients: [{
-              name: "mushroom",
-              quantity: "0.5kg"
-            },
-            {
-              name: "basil",
-              quantity: "1 spoon"
-            },
-            {
-              name: "parsley",
-              quantity: "1 teaspoon"
-            },
-            {
-              name: "egg",
-              quantity: "6"
-            },
-            {
-              name: "olive oil",
-              quantity: "2dl"
-            },
-            {
-              name: "salt",
-              quantity: "5g"
-            }
-          ],
-          description: "Wash and peel all the potatos before slicing them. The slices should be around 5mm. After this, add a spoon of olive oil and steer. Prepare the frier/pan and when it's ready start frying the potato slices. In the mean time you can start opening the eggs and blend them with a fork or any manual blending tool. Once all the slices are fried, throw the egg mix into the big bowl where you've previously thrown the potato slices. All the slices should be covered by the egg mix. If so, add the salt and throw in the mix into a very hot pan filled with around 5mm/1cm of olive oil. Turn down the temperature to 4/10 and heck the tortilla every 3-4 mins. When the down side is turning gold, turn the torilla upside down and remove when done.",
-          preparationTime: "1.5"
-        }
 
-      ],
+      // urlList: [
+      //   '../../img/span-tortilla.jpg',
+      //   '../../img/crepes.jpg',
+      //   '../../img/kladdkaka.jpg',
+      //   '../../img/slov-halusky.jpg',
+      //   '../../img/omelette.jpg',
+      // ],
+      // recipees: [{
+      //     name: "Spanish Tortilla",
+      //     id:"Spanish",
+      //     url:  '../../img/span-tortilla.jpg',
+      //     ingredients: [{
+      //         name: "potato",
+      //         quantity: "1kg"
+      //       },
+      //       {
+      //         name: "egg",
+      //         quantity: "8"
+      //       },
+      //       {
+      //         name: "olive oil",
+      //         quantity: "3dl"
+      //       },
+      //       {
+      //         name: "salt",
+      //         quantity: "5g"
+      //       }
+      //     ],
+      //     description: "Wash and peel all the potatos before slicing them. The slices should be around 5mm. After this, add a spoon of olive oil and steer. Prepare the frier/pan and when it's ready start frying the potato slices. In the mean time you can start opening the eggs and blend them with a fork or any manual blending tool. Once all the slices are fried, throw the egg mix into the big bowl where you've previously thrown the potato slices. All the slices should be covered by the egg mix. If so, add the salt and throw in the mix into a very hot pan filled with around 5mm/1cm of olive oil. Turn down the temperature to 4/10 and heck the tortilla every 3-4 mins. When the down side is turning gold, turn the torilla upside down and remove when done.",
+      //     preparationTime: "1.5"
+      //   },
+      //   {
+      //     name: "French Omelette",
+      //     id: "French",
+      //     url:'../../img/crepes.jpg',
+      //     ingredients: [{
+      //         name: "egg",
+      //         quantity: "3"
+      //       },
+      //       {
+      //         name: "olive oil",
+      //         quantity: "1 teaspoon"
+      //       },
+      //       {
+      //         name: "salt",
+      //         quantity: "1 pince"
+      //       }
+      //     ],
+      //     description: "Crack the eggs and blend them with a fork or any manual blending tool. Add the oil to the pan and throw the egg mix when the oil is warm enough. Turn down the temperature to 4/10. When the down side is turning gold, fold it in by its half and leave on the pan for an extra minute.",
+      //     preparationTime: "0.25"
+      //   },
+      //   {
+      //     name: "Swedish 'kladdkaka'",
+      //     id: "Swedish",
+      //     url:'../../img/kladdkaka.jpg',
+      //     ingredients: [{
+      //         name: "butter",
+      //         quantity: "100 g"
+      //       },
+      //       {
+      //         name: "egg",
+      //         quantity: "2"
+      //       },
+      //       {
+      //         name: "plain flour",
+      //         quantity: "150g"
+      //       },
+      //       {
+      //         name: "cocoa powder",
+      //         quantity: "4 teaspoon"
+      //       },
+      //       {
+      //         name: "vanilla sugar",
+      //         quantity: "1 tbsp"
+      //       },
+      //       {
+      //         name: "sugar",
+      //         quantity: "200 g"
+      //       },
+      //       {
+      //         name: "salt",
+      //         quantity: "1 pince"
+      //       }
+      //     ],
+      //     description: "Melt the butter and leave to cool slightly. Whisk the egg and sugar together until the mixture is light, fluffy and pale. Weigh all the dry ingredients and sift them into the egg and sugar mixture. Fold in until everything is incorporated. Fold in the melted butter until you are left with a smooth chocolate mixture. Pour into a lined cake tin.The cake will not rise, but it will puff up slightly during baking. Bake at 180°C for around 20 minutes.",
+      //     preparationTime: "0.35"
+      //   },
+      //   {
+      //     name: "Slovak gnocchi",
+      //     id: "Slovak",
+      //     url: '../../img/slov-halusky.jpg',
+      //     ingredients: [{
+      //         name: "potato",
+      //         quantity: "1 kg"
+      //       },
+      //       {
+      //         name: "flour",
+      //         quantity: "400 g"
+      //       },
+      //       {
+      //         name: "bryndza - cheese",
+      //         quantity: "300 g"
+      //       },
+      //       {
+      //         name: "smoked bacon",
+      //         quantity: "100 g"
+      //       },
+      //       {
+      //         name: "salt",
+      //         quantity: "1 pince"
+      //       },
+      //     ],
+      //     description: "Peel potatos, wash and shred them, add salt. Add flour to achive right consistency. Moisten the chopping board, put the part of the dough on it, use a knife to drop a little bit of the dough into the boiling salty water. When gnocchi (in slovak called halušky) are done they will float to the top. Pick them out, add bryndza-cheese and put fried bacon on top.",
+      //     preparationTime: "0.30"
+      //   },
+      //   {
+      //     name: "Mushroom Omelette",
+      //     id: "Mushroom",
+      //     url: '../../img/omelette.jpg',
+      //     ingredients: [{
+      //         name: "mushroom",
+      //         quantity: "0.5kg"
+      //       },
+      //       {
+      //         name: "basil",
+      //         quantity: "1 spoon"
+      //       },
+      //       {
+      //         name: "parsley",
+      //         quantity: "1 teaspoon"
+      //       },
+      //       {
+      //         name: "egg",
+      //         quantity: "6"
+      //       },
+      //       {
+      //         name: "olive oil",
+      //         quantity: "2dl"
+      //       },
+      //       {
+      //         name: "salt",
+      //         quantity: "5g"
+      //       }
+      //     ],
+      //     description: "Wash and peel all the potatos before slicing them. The slices should be around 5mm. After this, add a spoon of olive oil and steer. Prepare the frier/pan and when it's ready start frying the potato slices. In the mean time you can start opening the eggs and blend them with a fork or any manual blending tool. Once all the slices are fried, throw the egg mix into the big bowl where you've previously thrown the potato slices. All the slices should be covered by the egg mix. If so, add the salt and throw in the mix into a very hot pan filled with around 5mm/1cm of olive oil. Turn down the temperature to 4/10 and heck the tortilla every 3-4 mins. When the down side is turning gold, turn the torilla upside down and remove when done.",
+      //     preparationTime: "1.5"
+      //   }
+      //
+      // ],
 
     };
   },
   methods: {
     shoppingList: function(event) {
-      let currentname = event.target.name;
-      console.log("current name = " + currentname);
-      for (let index in this.recipees) {
-        if (this.recipees[index].name == currentname) {
+      let currentid = event.target.id;
+      console.log("current id = " + currentid);
+      for (let index in this.Recipees) {
+        if (this.Recipees[index].id == currentid) {
           this.thisIndex = index;
           this.rightList = true;
           this.disabledButtonYesOrNot = true;
@@ -218,16 +246,17 @@ export default {
     hideShoppingList: function(event) {
       this.rightList = false;
       this.disabledButtonYesOrNot = false;
+      this.thisIndex = '';
     },
     markRecipee: function(event) {
-      console.log(event.target);
+      console.log(event.target.id);
       this.currentname = event.target;
       let currentname = this.currentname.id;
       console.log(currentname);
       this.currentname.classList.add('selected');
-      for (let index in this.recipees) {
-        if (this.recipees[index].name == currentname) {
-          this.recipeeSelected = this.recipees[index];
+      for (let index in this.Recipees) {
+        if (this.Recipees[index].id == currentname) {
+          this.recipeeSelected = this.Recipees[index];
         }
       }
       this.showNotification = true;
@@ -239,9 +268,25 @@ export default {
       // console.log(this.showNotification);
       this.showNotification = false;
     },
-
-
-  }
+    changeElement: function(obj){
+      if (obj.type === "updateTitle") {
+        let currentid = event.target.id;
+        for (let index in this.Recipees) {
+          if (this.Recipees[index].id == currentid) {
+            this.$set(this.Recipees[index], "name", event.target.value)
+          }
+        }
+      }
+      if(obj.type === "updateDescription"){
+        let currentid = event.target.id;
+        for (let index in this.Recipees) {
+          if (this.Recipees[index].id == currentid) {
+            this.$set(this.Recipees[index], "description", event.target.value)
+          }
+        }
+      }
+    },
+  }//methods
 };
 
 
@@ -300,7 +345,16 @@ code::after {
   box-sizing: border-box;
   color: #0A0944;
 }
-
+nav{
+  background-color: #0A0944;
+  color: #F1F1F1;
+  height: 50px;
+  display: flex;
+  font-size: 30px;
+  margin: 0;
+  padding:5px;
+  list-style: none;
+}
 #app h1 {
   color: #0A0944;
   font-size: 80px;
@@ -310,16 +364,16 @@ code::after {
   /* text-shadow: 0px 5px 8px rgba(150, 150, 150, 1); */
 }
 
-img {
+/* img {
   box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
   height: 150px;
   margin: 0px;
   width: auto;
-}
+} */
 
 .banner {
   /* height: 200px; */
-  background-color:#76A665;
+  background-color:#FFF1C1;
   padding: 50px 10px;
 
 }
@@ -331,7 +385,7 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color:#76A665
+  background-color:#FFF1C1
 }
 
 .fade {
@@ -356,7 +410,7 @@ img {
   z-index: 3;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 3% 7%;
+  padding: 4%;
   -webkit-box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
   -moz-box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
   box-shadow: 0px 0px 40px 0px rgba(50, 77, 70, 1);
@@ -371,7 +425,7 @@ img {
 }
 
 .list {
-  margin-top: 15%;
+  /* margin-top: 15%; */
 }
 
 .close:hover {
@@ -380,9 +434,18 @@ img {
 
 .fa-times {
   color:  #0A0944;;
-  font-size: 30px;
 }
-
+footer{
+  background-color: #0A0944;
+  color: #F1F1F1;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-around;
+  height: 50px;
+  margin: 0;
+  padding:5px;
+}
 @keyframes spin {
   from {
     transform: rotate(0deg);
