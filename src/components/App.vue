@@ -41,7 +41,7 @@
     <selected-element v-if="showNotification" v-bind:SelectedRecipee="recipeeSelected.ingredients" v-bind:name="recipeeSelected.name" v-bind:preparationTime="recipeeSelected.preparationTime" v-on:hide-select-el="hideSelectedEl" />
   </div>
   <footer>
-    <div>Made with lots of <i class="fas fa-heart"></i> and <i class="fas fa-coffee"></i> by Alejandro &amp; Anna
+    <div>Made with lots of <i class="fas fa-heart"></i> and <i class="fas fa-coffee"></i> by <a href="https://github.com/alex1604">Alejandro</a> &amp; <a href="https://github.com/annafaix"> Anna</a>
     </div>
   </footer>
 
@@ -445,6 +445,9 @@ footer{
   height: 50px;
   margin: 0;
   padding:5px;
+}
+footer a {
+  color: #F1F1F1;
 }
 @keyframes spin {
   from {
